@@ -2,11 +2,7 @@ import streamlit as st
 import pickle
 import numpy as np
 
-# Load the model and data
-model = pickle.load(open('BookRecommend/artifacts/model.pkl', 'rb'))
-book_names = pickle.load(open('BookRecommend/artifacts/book_names.pkl', 'rb'))
-final_rating = pickle.load(open('BookRecommend/artifacts/final_rating.pkl', 'rb'))
-book_pivot = pickle.load(open('BookRecommend/artifacts/book_pivot.pkl', 'rb'))
+
 
 
 st.header('Book Recommender System Using Machine Learning')
