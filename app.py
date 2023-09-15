@@ -5,15 +5,13 @@ import os
 
 st.header('Book Recommender System Using Machine Learning')
 
-# Get the absolute path to the directory containing your pickle files
-artifacts_dir = os.path.join(os.path.dirname(__file__), 'artifacts')
 
-# Load the pickle files using absolute paths
-model = pickle.load(open(os.path.join(artifacts_dir, 'model.pkl'), 'rb'))
-book_names = pickle.load(open(os.path.join(artifacts_dir, 'book_names.pkl'), 'rb'))
-final_rating = pickle.load(open(os.path.join(artifacts_dir, 'final_rating.pkl'), 'rb'))
-book_pivot = pickle.load(open(os.path.join(artifacts_dir, 'book_pivot.pkl'), 'rb'))
 
+
+pickle.dump(model, open('artifacts/model.pkl','wb'))
+pickle.dump(books_name, open('artifacts/books_name.pkl','wb'))
+pickle.dump(final_rating, open('artifacts/final_rating.pkl','wb'))
+pickle.dump(book_pivot, open('artifacts/book_pivot.pkl','wb'))
 
 
 
