@@ -1,11 +1,21 @@
-import streamlit as st
 import pickle
+import streamlit as st
 import numpy as np
-
-
-
+import os
 
 st.header('Book Recommender System Using Machine Learning')
+
+# Get the absolute path to the directory containing your pickle files
+artifacts_dir = os.path.join(os.path.dirname(__file__), 'artifacts')
+
+# Load the pickle files using absolute paths
+model = pickle.load(open(os.path.join(artifacts_dir, 'model.pkl'), 'rb'))
+book_names = pickle.load(open(os.path.join(artifacts_dir, 'book_names.pkl'), 'rb'))
+final_rating = pickle.load(open(os.path.join(artifacts_dir, 'final_rating.pkl'), 'rb'))
+book_pivot = pickle.load(open(os.path.join(artifacts_dir, 'book_pivot.pkl'), 'rb'))
+
+
+
 
 def fetch_poster(suggestion):
     book_name = []
@@ -15,7 +25,7 @@ def fetch_poster(suggestion):
     for book_id in suggestion:
         book_name.append(book_pivot.index[book_id])
 
-    for name in book_name[0]:
+    for name in book_name[0]: 
         ids = np.where(final_rating['title'] == name)[0][0]
         ids_index.append(ids)
 
@@ -25,18 +35,22 @@ def fetch_poster(suggestion):
 
     return poster_url
 
+
+
 def recommend_book(book_name):
     books_list = []
     book_id = np.where(book_pivot.index == book_name)[0][0]
-    distance, suggestion = model.kneighbors(book_pivot.iloc[book_id, :].values.reshape(1, -1), n_neighbors=6)
+    distance, suggestion = model.kneighbors(book_pivot.iloc[book_id,:].values.reshape(1,-1), n_neighbors=6 )
 
     poster_url = fetch_poster(suggestion)
-
+    
     for i in range(len(suggestion)):
-        books = book_pivot.index[suggestion[i]]
-        for j in books:
-            books_list.append(j)
-    return books_list, poster_url
+            books = book_pivot.index[suggestion[i]]
+            for j in books:
+                books_list.append(j)
+    return books_list , poster_url       
+
+
 
 selected_books = st.selectbox(
     "Type or select a book from the dropdown",
@@ -44,7 +58,7 @@ selected_books = st.selectbox(
 )
 
 if st.button('Show Recommendation'):
-    recommended_books, poster_url = recommend_book(selected_books)
+    recommended_books,poster_url = recommend_book(selected_books)
     col1, col2, col3, col4, col5 = st.columns(5)
     with col1:
         st.text(recommended_books[1])
